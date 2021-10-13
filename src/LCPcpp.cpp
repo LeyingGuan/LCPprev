@@ -47,9 +47,6 @@ List LCP_construction_path_distance(arma::vec& V, arma::vec& id_low, arma::vec& 
   int n = V.n_elem;
   int n0 = n-1;
   //note n: <-n+1, with infinite V at the end
-  // Rcout << n << "\n";
-  // Rcout << n0 << "\n";
-  // Rcout << q_low.n_elem << "\n";
   arma::mat theta = arma::zeros<arma::mat>(m, n);
   arma::mat theta0 = arma::zeros<arma::mat>(m, n);
   arma::vec qn_new =  arma::zeros<arma::vec>(m);
@@ -67,33 +64,6 @@ List LCP_construction_path_distance(arma::vec& V, arma::vec& id_low, arma::vec& 
     }
   }
   qn_new = theta.col(n0) * 1.0;
-  //This may not be ueseful in the new code
-  // for(int i = 1; i < n; i++){
-  //   int tmp1 = id_low(i-1);
-  //   int tmp2 = id_low(i);
-  //   int tmp_double1 = 0;
-  //   int tmp_double2 = 0;
-  //   theta0.col(i) = theta0.col(i-1) * 1.0;
-  //   if(tmp1 >= 0){
-  //     tmp_double1 = id_low(tmp1);
-  //   }
-  //   if(tmp2 >=0){
-  //     tmp_double2 = id_low(tmp2);
-  //   }
-  //   if((tmp_double2 - tmp_double1) > 0){
-  //     int i1 = tmp_double1+1;
-  //     while(i1 <= tmp_double2){
-  //       theta0.col(i) += Hnew.col(i1);
-  //       i1+=1;
-  //     }
-  //   }
-  // }
-  // arma::vec idxs = arma::zeros<arma::vec>(n0);
-  // for(int i = 0; i < n0; i++){
-  //   idxs(i) = id_low(i);
-  // }
-  //in the old code, theta0_{j,i} is ttheta_{j,l(i)}
-  //it is now ttheta_{j,i}
   theta0 = theta;
   for(int i = 0; i < m; i++){
     arma::vec normalizers = qn + HnewT.col(i);
@@ -184,91 +154,6 @@ List LCP_construction_path_distance(arma::vec& V, arma::vec& id_low, arma::vec& 
       alphas(i, k) = (itA1+itA2+itA3)/(n0+1.0);
     }
   }
-    //arma::vec theta_0 = arma::zeros<arma::vec>(n);
-    //arma::vec theta_1 = arma::zeros<arma::vec>(n0);
-    //arma::vec theta_2 = arma::zeros<arma::vec>(n0);
-    // for(int i1 = 0; i1 < n0; i1++){
-    //   theta_0(i1) =  theta(i,i1);
-    //   theta_1(i1) = theta(i,i1);
-    //   theta_2(i1) = theta0(i,i1);
-    // }
-    // theta_0(n0) = theta(i, n0);
-    // theta_0 = theta_0/(qn_new(i)+1.0);
-    // theta_1 = theta_1/(qn_new(i)+1.0);
-    // theta_2 = theta_2/(qn_new(i)+1.0);
-
-    
-    // arma::uvec idA1 = find(p1 < theta_2);
-    // arma::uvec idA2 = find(p2 >= theta_2);
-    // arma::uvec idA3 = find((p2 < theta_2) && (p1 >= theta_2));
-  //   arma::vec pA1 = p1(idA1);
-  //   arma::vec pA2 = p2(idA2);
-  //   arma::vec pA3 = idxs(idA3);
-  //   int nA1 = pA1.n_elem;
-  //   int nA2 = pA2.n_elem;
-  //   int nA3 = pA3.n_elem;
-  //   arma::vec pA1sort;
-  //   arma::vec pA2sort;
-  //   arma::vec pA3sort;
-  //   if(nA1 > 0){
-  //     pA1sort = arma::sort(pA1);
-  //   }else{
-  //     pA1sort = pA1;
-  //   }
-  //   if(nA2 > 0){
-  //     pA2sort = arma::sort(pA2);
-  //   }else{
-  //     pA2sort = pA2;
-  //   }
-  //   if(nA3 > 0){
-  //     pA3sort = arma::sort(pA3);
-  //   }else{
-  //     pA3sort = pA3;
-  //   }
-  //   int itA1=0;
-  //   int itA2 = 0;
-  //   int itA3 = 0;
-  //   int k = -1;
-  //   //Rcout << "step1" << "\n";
-  //   while(k < (n-1)){
-  //     k += 1;
-  //     //check if someone in A list satisfies the condition
-  //     if(nA1 > 0 & itA1 < nA1){
-  //       while(itA1< (nA1-1) & pA1sort(itA1) < theta_0(k)){
-  //         itA1 += 1;
-  //       }
-  //       if(itA1 == (nA1-1)){
-  //         if(pA1sort(itA1)< theta_0(k)){
-  //           itA1 += 1;
-  //         }
-  //       }
-  //     }
-  //     //check if someone in B list satisfies the condition
-  //     if(nA2 > 0 & itA2 < nA2){
-  //       while(itA2< (nA2-1) & pA2sort(itA2) < theta_0(k)){
-  //         itA2 += 1;
-  //       }
-  //       if(itA2 == (nA2-1)){
-  //         if(pA2sort(itA2)< theta_0(k)){
-  //           itA2 += 1;
-  //         }
-  //       }
-  //     }
-  //     //check if someone in B list satisfies the condition
-  //     if(nA3 > 0 & itA3 < nA3){
-  //       while(itA3< (nA3-1) & pA3sort(itA3) < k){
-  //         itA3 += 1;
-  //       }
-  //       if(itA3 == (nA3-1)){
-  //         if(pA3sort(itA3) < k){
-  //           itA3 += 1;
-  //         }
-  //       }
-  //     }      
-  //     // Calculate condition value
-  //     alphas(i, k) = (itA1+itA2+itA3)/(n0+1.0);
-  //   }
-  // }
   List ret = List::create(Named("alphas") = alphas , _["vs"] = V);
   return ret;
 }
