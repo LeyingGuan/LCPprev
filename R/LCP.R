@@ -205,6 +205,7 @@ LCP_construction_path = function(alpha, V,  id_low, q_low,  qn,  Hnew, HnewT,typ
 #'@import torchvision
 #'@import XRPython
 #'@useDynLib LCPcpp, .registration=TRUE
+#'@export
 #'\examples{
 #' man/examples/example_intro.R
 #'}
